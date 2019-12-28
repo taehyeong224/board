@@ -40,3 +40,6 @@ caption {display:none; width:0; height:0; margin-top:-1px; overflow:hidden; visi
 
 .file_list a {display:inherit !important;}
 
+.header {
+    height: 100px;
+}

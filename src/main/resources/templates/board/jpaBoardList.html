@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="UTF-8">
 	<title>board</title>
@@ -7,6 +7,14 @@
 	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
+	<div class="header">
+		<a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+		<a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+		<a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
+		<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a>
+		<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
+	</div>
+
     <div class="container">
     	<h2>게시글 목록</h2>
     	<table class="board_list">
@@ -65,5 +73,7 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!--	<footer th:replace="commonFooter:: footerFragment"></footer>-->
 </body>
 </html>

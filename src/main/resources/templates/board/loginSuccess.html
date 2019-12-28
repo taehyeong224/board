@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 성공</title>
+</head>
+<body>
+<h1>로그인 성공!!</h1>
+<hr>
+<span>
+    <span sec:authentication="name"></span>님 환영합니다~
+    <span sec:authentication var="user" property="principal"></span>
+    <span sec:authentication property="principal.email"></span>
+</span>
+<a th:href="@{'/jpa/board'}">메인으로 이동</a>
+</body>
+</html>
