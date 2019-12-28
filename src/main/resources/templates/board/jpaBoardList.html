@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>board</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -35,10 +36,34 @@
 	        	</tr>
 	        </tbody>
 	    </table>
-		<div th:each="num : ${#numbers.sequence(1, list.getTotalPages())}">
-			<div th:text="${num}"></div>
-		</div>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination"
+				th:with="start=${T(Math).floor(list.number / 10) * 10 + 1}, last=(${start + 9 < list.totalPages ? start + 9 : list.totalPages})">
+				<li class="page-item" th:classappend="${list.first} ? disabled" ><a class="page-link" th:href="@{/jpa/board(page=0)}">First</a></li>
+
+				<li class="page-item" th:classappend="${list.first} ? 'disabled'">
+					<a class="page-link" th:href="${list.first} ? '#' :@{/jpa/board(page=${list.number - 2})}">&lt;</a>
+				</li>
+
+				<div th:each="num : ${#numbers.sequence(start, last)}">
+				<li class="page-item" th:classappend="${list.getNumber() == (num - 1)} ? active : ''">
+					<a class="page-link" href="/jpa/board?page=" th:attrappend="href=${num - 1}" th:text="${num}"></a>
+				</li>
+				</div>
+
+				<li class="page-item" th:classappend="${list.last} ? 'disabled'">
+					<a class="page-link" th:href="${list.last} ? '#' :@{/jpa/board(page=${list.number + 2})}">&gt;</a>
+				</li>
+
+				<li class="page-item"><a class="page-link" th:href="@{/jpa/board(page=${list.totalPages - 1})}">Last</a></li>
+			</ul>
+		</nav>
 	    <a href="/jpa/board/write" class="btn">글 쓰기</a>
     </div>
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
