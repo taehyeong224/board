@@ -2,13 +2,13 @@ package me.codingall.board.board.repository;
 
 import me.codingall.board.board.entity.BoardEntity;
 import me.codingall.board.board.entity.BoardFileEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface JpaBoardRepository extends CrudRepository<BoardEntity, Integer> {
+public interface JpaBoardRepository extends JpaRepository<BoardEntity, Integer> {
 
 	List<BoardEntity> findAllByOrderByBoardIdxDesc();
 	

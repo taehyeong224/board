@@ -4,7 +4,9 @@ import me.codingall.board.board.entity.BoardEntity;
 import me.codingall.board.board.entity.BoardFileEntity;
 import me.codingall.board.board.repository.JpaBoardRepository;
 import me.codingall.board.common.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -15,11 +17,14 @@ import java.util.Optional;
 @Service
 public class JpaBoardServiceImpl implements JpaBoardService{
 	
-	@Autowired
-	JpaBoardRepository jpaBoardRepository;
+	private final JpaBoardRepository jpaBoardRepository;
 	
-	@Autowired
-	FileUtils fileUtils;
+	private final FileUtils fileUtils;
+
+	public JpaBoardServiceImpl(JpaBoardRepository jpaBoardRepository, FileUtils fileUtils) {
+		this.jpaBoardRepository = jpaBoardRepository;
+		this.fileUtils = fileUtils;
+	}
 
 	@Override
 	public List<BoardEntity> selectBoardList() throws Exception {
@@ -30,7 +35,7 @@ public class JpaBoardServiceImpl implements JpaBoardService{
 	public void saveBoard(BoardEntity board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 		board.setCreatorId("admin");
 		List<BoardFileEntity> list = fileUtils.parseFileInfo(multipartHttpServletRequest);
-		if(CollectionUtils.isEmpty(list) == false){
+		if(!CollectionUtils.isEmpty(list)){
 			board.setFileList(list);
 		}
 		jpaBoardRepository.save(board);
@@ -60,5 +65,12 @@ public class JpaBoardServiceImpl implements JpaBoardService{
 	public BoardFileEntity selectBoardFileInformation(int boardIdx, int idx) throws Exception {
 		BoardFileEntity boardFile = jpaBoardRepository.findBoardFile(boardIdx, idx);
 		return boardFile;
+	}
+
+	@Override
+	public Page<BoardEntity> getBoardList(Pageable pageable, Integer count) {
+		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1); // page는 index 처럼 0부터 시작
+		PageRequest pageRequest = PageRequest.of(page, count);
+		return jpaBoardRepository.findAll(pageRequest);
 	}
 }
