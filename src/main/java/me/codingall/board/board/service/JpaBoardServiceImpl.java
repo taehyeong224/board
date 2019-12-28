@@ -27,11 +27,6 @@ public class JpaBoardServiceImpl implements JpaBoardService{
 	}
 
 	@Override
-	public List<BoardEntity> selectBoardList() throws Exception {
-		return jpaBoardRepository.findAllByOrderByBoardIdxDesc();
-	}
-
-	@Override
 	public void saveBoard(BoardEntity board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 		board.setCreatorId("admin");
 		List<BoardFileEntity> list = fileUtils.parseFileInfo(multipartHttpServletRequest);
@@ -68,9 +63,8 @@ public class JpaBoardServiceImpl implements JpaBoardService{
 	}
 
 	@Override
-	public Page<BoardEntity> getBoardList(Pageable pageable, Integer count) {
-		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1); // page는 index 처럼 0부터 시작
-		PageRequest pageRequest = PageRequest.of(page, count);
+	public Page<BoardEntity> getBoardList(Pageable pageable) {
+		PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
 		return jpaBoardRepository.findAll(pageRequest);
 	}
 }

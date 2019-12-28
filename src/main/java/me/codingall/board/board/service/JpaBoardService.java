@@ -6,11 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.List;
-
 public interface JpaBoardService {
-
-	List<BoardEntity> selectBoardList() throws Exception;
 
 	void saveBoard(BoardEntity board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 	
@@ -20,5 +16,5 @@ public interface JpaBoardService {
 
 	BoardFileEntity selectBoardFileInformation(int boardIdx, int idx) throws Exception;
 
-	Page<BoardEntity> getBoardList(Pageable pageable, Integer count);
+	Page<BoardEntity> getBoardList(Pageable pageable);
 }
